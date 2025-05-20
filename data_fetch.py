@@ -5,18 +5,9 @@ import io
 
 def get_price_data(stock_id: str):
     url = f"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date=20240201&stockNo={stock_id}"
-    headers = {
-        "User-Agent": "Mozilla/5.0"
-    }
-    response = requests.get(url, headers=headers)
+    response = requests.get(url)
     data = response.text
-
-    # 過濾合法 CSV 行
     lines = [line for line in data.split("\n") if len(line.split(",")) >= 7]
-
-    if not lines:
-        raise ValueError("取得股價資料失敗，請確認來源是否有更新或被阻擋")
-
     csv_data = "\n".join(lines)
     df = pd.read_csv(io.StringIO(csv_data))
     df["Date"] = pd.to_datetime(df["日期"].str.replace("/", "-"))

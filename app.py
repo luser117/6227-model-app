@@ -10,11 +10,7 @@ if not check_login():
 st.title("6227 茂綸 - 智能買賣分析系統")
 
 with st.spinner("取得資料中..."):
-    try:
-        price_df = get_price_data("6227")
-    except Exception as e:
-        st.error(f"讀取股價資料失敗：{e}")
-        st.stop()
+    price_df = get_price_data("6227")
     revenue_df = get_revenue_data("6227")
 
 df = pd.merge(price_df, revenue_df, on="Date", how="inner")
