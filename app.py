@@ -13,6 +13,10 @@ st.title("📈 6227 茂綸 - 技術指標與簡易預測模型")
 
 try:
     price_df = get_price_data("6227")
+    st.write("📄 資料預覽", price_df.head())
+    if 'close' not in price_df.columns:
+        st.error("❌ 資料缺少 'close' 欄位，請檢查 data_fetch.py 的欄位命名。")
+        st.stop()
 except Exception as e:
     st.error(f"讀取股價資料失敗：{e}")
     st.stop()
