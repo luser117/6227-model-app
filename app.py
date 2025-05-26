@@ -25,10 +25,13 @@ price_df['MA20'] = price_df['close'].rolling(window=20).mean()
 price_df['Upper'] = price_df['MA20'] + 2 * price_df['close'].rolling(window=20).std()
 price_df['Lower'] = price_df['MA20'] - 2 * price_df['close'].rolling(window=20).std()
 
+plot_df = price_df.dropna(subset=['MA20', 'Upper', 'Lower'])
+
 st.subheader("股價與布林通道")
 fig, ax = plt.subplots(figsize=(12, 6))
-ax.plot(price_df['date'], price_df['close'], label='收盤價')
-ax.plot(price_df['date'], price_df['MA20'], label='MA20')
-ax.fill_between(price_df['date'], price_df['Upper'], price_df['Lower'], color='gray', alpha=0.3, label='布林通道')
+ax.plot(plot_df['date'], plot_df['close'], label='收盤價')
+ax.plot(plot_df['date'], plot_df['MA20'], label='MA20')
+ax.fill_between(plot_df['date'], plot_df['Upper'], plot_df['Lower'],
+                color='gray', alpha=0.3, label='布林通道')
 ax.legend()
 st.pyplot(fig)
